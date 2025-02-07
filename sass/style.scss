@@ -1,0 +1,607 @@
+@use "sass:map";
+
+$breakpoints: (
+    tb: "(min-width: 768px)", // 文字列から `screen and` を外す
+    pc: "(min-width: 1024px)" // pcも追加する
+);
+
+@mixin mq($breakpoint: tb) { // デフォルト値を `$breakpoints` 内のキーに
+    @media screen and #{map-get($breakpoints, $breakpoint)} {
+        @content;
+    }
+}
+
+
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+body {
+    overflow-x: hidden;
+    color: #000;
+    font-family: "Inter", serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: #fff;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* 横スクロールを無効化 */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.button {
+    padding: 7px 25px;
+    display: inline-block;
+    background: #000080;
+    color: #fff;
+    text-align: center;
+    border-radius: 25px;
+    min-width: 272px;
+    margin-top: 20px;
+
+    a {
+      font-size: clamp(12px, 2vw, 20px);
+      display: flex;
+      justify-content: center;
+    }
+
+    svg {
+      margin-left: 10px;
+      width: calc(32px / 272px * 100%);
+    }
+}
+
+.heading {
+  color: #000;
+  font-size: clamp(18px, 4vw, 36px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding-block: 10px;
+  padding-inline: 10px;
+  @include mq(tb) {
+    padding-inline: 0;
+  }
+}
+
+.hidden-pc {
+    display: inline-block !important;
+  
+    @include mq(pc) {
+      display: none !important;
+    }
+}
+
+.hidden-tb {
+    display: inline-block !important;
+  
+    @include mq(tb) {
+      display: none !important;
+    }
+}
+
+.hidden-sp {
+    display: none !important;
+  
+    @include mq(tb) {
+      display: inline-block !important;
+    }
+}
+
+//ヘッダー ========================
+.header {
+    position: fixed;
+    z-index: 101;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    background: #fff;
+  }
+  .header__inner {
+    display: flex;
+    justify-content: space-between;
+    padding-block: 10px;
+    padding-inline: 20px;
+  }
+
+  .header__logo {
+    display: inline-block;
+    padding-block: 10px;
+  }
+
+  .header__nav {
+    display: block;
+    padding-block: 32px;
+  }
+
+  .header__list {
+    display: flex;
+    gap: 40px;
+    a {
+      font-size: clamp(16px, 3vw, 24px);
+    }
+  }
+  
+  //アイコン ====================
+  .drawer__icon {
+    position: fixed;
+    z-index: 102;
+    top: 25px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .drawer__icon--bar {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    background: #D9D9D9;
+    transition: all 0.3s ease;
+
+    &:nth-of-type(1) {
+      top: 10px;
+      left: 0;
+      
+    }
+  
+    &:nth-of-type(2) {
+      top: 30px;
+    }
+  
+    &:nth-of-type(3) {
+      top: 50px;
+    }
+
+  }
+  
+  //メニューが開いている時 ========
+  .drawer__icon.js-show {
+    .drawer__icon--bar:nth-of-type(1) {
+      rotate: 45deg;
+      translate: 0 20px;
+    }
+    .drawer__icon--bar:nth-of-type(2) {
+      display: none;
+    }
+    .drawer__icon--bar:nth-of-type(3) {
+      rotate: -45deg;
+      translate: 0 -20px;
+    }
+  }
+  
+  //ドロワーメニュー
+//   .drawer__ background {
+//     position: fixed;
+//     width: 100%;
+//     height: 100%;
+//     background: rgba(0,0,0,.5);
+//     top: 0;
+//     left: 0;
+//     z-index: 1000;
+//     display: none;
+//   }
+
+// .drawer__background.js-show {
+//   display: block;
+// }
+
+
+
+  .drawer {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    width: 100%;
+    padding-top: 120px;
+    background: #fff;
+    overflow-y: scroll;
+    transform: translateY(-100%);
+    transition: transform 0.5s ease;
+    &.js-show {
+      transform: translateY(0);
+    }
+  }
+  .drawer__body {
+    width: 100%;
+    text-align: center;
+  }
+  .drawer__list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 32px;
+    margin-bottom: 40px;
+    li a {
+      color: #000;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+  .drawer__btn {
+    display: inline-block;
+    padding: 6px 30px;
+    background: #000;
+    border-radius: 100vmax;
+    color: #000;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: normal;
+  }
+  
+  .fv {
+  margin-top: 120px;
+  padding-block: 10px;
+  position: relative;
+  }
+  
+  .fv__inner {
+  // max-width: 1920px;
+  // width: min(calc(1440px + 20px * 2), 100%);
+  padding-inline: 20px;
+  margin-inline: auto;
+  padding-inline: 0;
+  margin-inline: auto;
+  }
+  
+  .fv__body {
+    background: url(../img/fv_image-pc.webp) no-repeat center center / cover;
+    height: 300px;
+    width: auto;
+  @include mq(tb) {
+    width: 100%;
+    height: auto;
+    position: relative;
+    aspect-ratio: 1440 / 560;
+  }
+  }
+  
+  .fv-image__text-area {
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  position: absolute;
+  left: 20px;
+  top: 70px;
+  width: 40vw;
+  }
+  
+  .fv-image__text-area-heading {
+  // font-size: clamp(18px, 4vw, 36px);
+  font-size: 3.5vw;
+  }
+  
+  .fv-image__text {
+  // font-size: clamp(12px, 3vw, 24px);
+  font-size: 2vw;
+  opacity: 0.8;
+  }
+  
+  .about {
+  background: #FFF;
+  }
+  
+  .about__inner {
+    width: min(calc(380px + 10px * 2), 100%);
+    margin-inline: auto;
+    @include mq(tb) {
+      width: min(calc(1000px + 20px * 2), 100%);
+      padding-inline: 20px;
+    }
+  }
+  
+  .about__heading {
+    color: #000;
+    font-size: clamp(18px, 4vw, 36px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding-block: 10px;
+  }
+
+  .about__heading-text {
+
+  }
+
+  .about__image-area {
+    @include mq(tb) {
+      padding: 10px 0 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    // display: grid;
+    // grid-template-columns: minmax(0, 480px) auto;
+  }
+
+  .about__image {
+    padding-inline: 10px;
+    @include mq(tb) {
+      width: calc(480px / 1000px * 100%);
+    }
+    img {
+      width: 100%;
+    }
+  }
+  
+  
+  .about__image-text-area {
+
+    @include mq(tb) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: calc(450px / 1000px * 100%);
+    }
+  }
+  
+  .about__image-text {
+    padding-inline: 10px;
+    color: #000;
+    font-family: Inter;
+    font-size: clamp(12px, 2vw, 20px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .button {
+
+  }
+  
+  .about__button {
+    margin-inline: auto;
+    margin-top: 20px;
+    width: 60.4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a {
+      display: flex;
+      justify-content: center;
+    }
+
+    svg {
+      margin-left: 10px;
+      width: calc(32px / 272px * 100%);
+    }
+  }
+
+  .feature {
+
+  }
+
+  .feature__inner {
+    margin-inline: auto;
+    width: min(calc(380px + 10px * 2), 100%);
+
+    @include mq(tb) {
+      width: min(calc(1000px + 20px * 2), 100%);
+      padding-inline: 20px;
+    }
+  }
+
+  .feature__heading {
+    
+  }
+
+  .feature__body {
+    padding-inline: 10px;
+    @include mq(tb) {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      
+    }
+  }
+  
+  .feature__image-area {
+    
+  }
+  
+  .feature__image-area__heading {
+    font-size: clamp(16px, 3vw, 24px);
+  
+  }
+  
+  .feature__image-area__image {
+  
+  }
+  
+  .feature__image-area__text {
+    font-size: clamp(12px, 2vw, 16px);
+  }
+
+  .examples {
+
+  }
+
+  .examples__inner {
+    margin-inline: auto;
+    padding-inline: 10px;
+    width: min(calc(380px + 10px * 2), 100%);
+
+    @include mq(tb) {
+      width: min(calc(1000px + 20px * 2), 100%);
+      padding-inline: 20px;
+    }
+  }
+
+  .examples__heading {
+  
+  }
+  
+  .examples__body {
+
+    @include mq(tb) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+  }
+  
+  .examples__area {
+  
+  }
+  
+  .examples__image {
+  
+  }
+  
+  .examples__text-area {
+    margin-top: 10px;
+    display: flex;
+  }
+
+  .examples__text {
+    font-size: clamp(12px, 2vw, 16px);
+    width: calc(300px / 480px * 100%);
+  }
+  
+  .examples__text-image {
+    width: 25%;
+    @include mq(tb) {
+      width: 100px;
+    }
+    margin-left: auto;
+  }
+  
+  .examples__text-image-text {
+    font-size: clamp(12px, 2vw, 16px);
+
+  }
+  
+  .examples__button {
+    display: flex;
+    margin-inline: auto;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .qa {
+  
+  }
+  
+  .qa__inner {
+    width: min(calc(380px + 10px * 2), 100%);
+    margin-inline: auto;
+    padding-inline: 10px;
+
+    @include mq(tb) {
+      width: min(calc(1000px + 20px * 2), 100%);
+      padding-inline: 20px;
+    }
+  }
+  
+  .qa__heading {
+  
+  }
+  
+  .qa__body {
+
+  @include mq(tb) {
+    display: flex;
+    gap: 10px;
+  }
+  }
+  
+  .qa__image-area {
+
+    @include mq(tb) {
+      width: calc(460px / 1000px * 100%);
+    }
+  }
+  
+  .qa__image {
+    
+  }
+  
+  .qa__image-text {
+    margin-top: 18px;
+    font-size: clamp(12px, 2vw, 16px);
+  }
+  
+  .qa__text-area {
+    margin-top: 20px;
+    @include mq(tb) {
+      margin-top: 0;
+      width: calc(530px / 1000px * 100%);
+      
+    }
+    text-align: center;
+  
+  }
+  
+  .qa__text-area-main {
+    font-size: clamp(16px, 3vw, 24px);
+  }
+  
+  .qa__text-area-add {
+    margin-top: clamp(20px, 5vw, 40px);
+    font-size: clamp(16px, 2vw, 20px);
+  }
+  
+  .qa__text-area-tel {
+    margin-top: clamp(20px, 5vw, 40px);
+    font-size: clamp(16px, 2vw, 20px);
+  
+  }
+  
+  .qa__button {
+    display: flex;
+    margin-inline: auto;
+    align-items: center;
+    justify-content: center;
+    margin-top: clamp(20px, 5vw, 40px);
+  }
+  
+  .footer {
+  background: #fff;
+  }
+  
+  .footer__inner {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-block: 10px;
+    padding-inline: 10px;
+
+    @include mq(tb) {
+      padding-inline: 20px;
+    }
+  }
+  
+  .footer__logo {
+  
+  }
+  
+  .footer__nav {
+    padding-block: 32px;
+  }
+  
+  .footer__list {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+
+    @include mq(tb) {
+      gap: 40px;
+    }
+    a {
+      font-size: clamp(12px, 3vw, 24px);
+    }
+  }
+  
+  
